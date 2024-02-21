@@ -3,6 +3,7 @@ const models = require('../models');
 let Op = require("sequelize").Op;
 
 exports.index = function (req, res) {
+    console.log('test')
     let page = req.query.page || 1;
     let offset = 0;
     if (page > 1) {

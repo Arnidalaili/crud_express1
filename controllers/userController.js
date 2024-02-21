@@ -9,18 +9,18 @@ exports.index = function (req, res) {
     if (page > 1) {
         offset = ((page - 1) * 10) + 1;
     }
-    models.siswas.findAndCountAll({
+    models.users.findAndCountAll({
         limit: 10,
         offset: offset,
         order: [['id', 'DESC']],
-    }).then((siswas) => {
+    }).then((users) => {
         const alertMessage = req.flash('alertMessage');
         const alertStatus = req.flash('alertStatus');
         const alert = { message: alertMessage, status: alertStatus };
-        const totalPage = Math.ceil(siswas.count / 10);
+        const totalPage = Math.ceil(users.count / 10);
         const pagination = { totalPage: totalPage, currentPage: page };
-        res.render('siswa/index', {
-            siswa: siswas.rows,
+        res.render('user/index', {
+            user: users.rows,
             alert: alert,
             pagination: pagination
         });
@@ -38,26 +38,25 @@ exports.create = function (req, res) {
         no_telp: req.flash('no_telp'),
         alamat: req.flash('alamat')
     };  
-    res.render('siswa/tambah', {
+    res.render('user/tambah', {
         alert: alert,
         data: data
     });
 }
-exports.createSiswa = function (req, res) {
-    let siswaFound;
-    models.siswas.create(req.body).then((siswa) => {
-        siswaFound = siswa;
-        req.flash('alertMessage', `Sukses Menambahkan Data Siswa dengan nama : ${siswaFound.nama}`);
+exports.createUser = function (req, res) {
+    let userFound;
+    models.users.create(req.body).then((user) => {
+        userFound = user;
+        req.flash('alertMessage', `Sukses Menambahkan Data User dengan nama : ${userFound.nama}`);
         req.flash('alertStatus', 'success');
-        res.redirect('/siswa');
+        res.redirect('/user');
     }).catch((err) => {
         req.flash('alertMessage', err.message);
         req.flash('alertStatus', 'danger');
         req.flash('name', req.body.nama);
-        req.flash('name', req.body.gender);
-        req.flash('name', req.body.no_telp);
-        req.flash('name', req.body.alamat);
-        res.redirect('/siswa/tambah');
+        req.flash('name', req.body.username);
+        req.flash('name', req.body.password);
+        res.redirect('/user/tambah');
     });
 }
 exports.edit = function (req, res) {
@@ -66,43 +65,43 @@ exports.edit = function (req, res) {
     const alert = { message: alertMessage, status: alertStatus };
 
     const id = req.params.id;
-    models.siswas.findOne({ where: { id: { [Op.eq]: id } } }).then((siswa) => {
-        res.render('siswa/edit', {
+    models.users.findOne({ where: { id: { [Op.eq]: id } } }).then((user) => {
+        res.render('user/edit', {
             alert: alert,
-            siswa: siswa
+            user: user
         });
     });
 }
-exports.editSiswa = function (req, res) {
+exports.editUser = function (req, res) {
     const id = req.params.id;
-    let siswaFound;
-    models.siswas.findOne({ where: { id: { [Op.eq]: id } } }).then((siswa) => {
-        siswaFound = siswa;
-        return siswa.update(req.body).then(() => {
-            req.flash('alertMessage', `Sukses Mengubah Data Siswa dengan nama : ${siswaFound.nama}`);
+    let userFound;
+    models.users.findOne({ where: { id: { [Op.eq]: id } } }).then((user) => {
+        userFound = user;
+        return user.update(req.body).then(() => {
+            req.flash('alertMessage', `Sukses Mengubah Data User dengan nama : ${userFound.nama}`);
             req.flash('alertStatus', 'success');
-            res.redirect('/siswa');
+            res.redirect('/user');
         })
     }).catch((err) => {
         req.flash('alertMessage', err.message);
         req.flash('alertStatus', 'danger');
-        res.redirect('/siswa');
+        res.redirect('/user');
     });
 }
-exports.hapusSiswa = function (req, res) {
+exports.hapusUser = function (req, res) {
     let id = req.params.id;
-    let siswaFound;
-    models.siswas.findOne({ where: { id: { [Op.eq]: id } } }).then((siswa) => {
-        siswaFound = siswa;
-        return siswa.destroy().then(() => {
-            req.flash('alertMessage', `Sukses Menghapus Data Siswa dengan nama : ${siswaFound.nama}`);
+    let userFound;
+    models.users.findOne({ where: { id: { [Op.eq]: id } } }).then((user) => {
+        userFound = user;
+        return user.destroy().then(() => {
+            req.flash('alertMessage', `Sukses Menghapus Data User dengan nama : ${userFound.nama}`);
             req.flash('alertStatus', 'success');
-            res.redirect('/siswa');
+            res.redirect('/user');
         })
     }).catch((err) => {
         req.flash('alertMessage', err.message);
         req.flash('alertStatus', 'danger');
-        res.redirect('/siswa');
+        res.redirect('/user');
     });
 }
 

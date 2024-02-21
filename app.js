@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const siswa = require("./routes/siswa");
+const user = require("./routes/user");
 
 app.use(cookieParser("keyboard cat"));
 app.use(session({ cookie: { maxAge: 60000 } }));
@@ -36,6 +37,7 @@ app.use(
 // routes
 app.use("/", router);
 app.use("/siswa", siswa);
+app.use("/user", user);
 
 const port = process.env.PORT || 3300;
 

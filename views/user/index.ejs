@@ -1,0 +1,90 @@
+<%- include ../templates/adminlte/header-top-nav.ejs %>
+<!-- Full Width Column -->
+<div class="content-wrapper">
+  <div class="container">
+    <br>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Data User
+        <small>Read All Data User</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Data User</li>
+      </ol>
+      <% if(alert.message != '') { %>
+      <br>
+      <div class="alert alert-<%= alert.status %>" style="text-align: center;">
+        <strong><%= alert.message %></strong>
+      </div>
+      <% } %>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Data User</h3> <a href="/user/create" class="btn btn-primary">+</a>
+        </div>
+        <div class="box-body table-responsive no-padding">
+          <table id="example1" class="table table-hover">
+            <thead>
+              <th>No.</th>
+              <th>Nama</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Aksi</th>
+            </thead>
+            <tbody>
+              <% for (var i = 0; i < user.length; i++) { %>
+              <tr>
+                <td>
+                  <%= i+1 %>
+                </td>
+                <td>
+                  <%= user[i].nama %>
+                </td>
+                <td>
+                  <%= user[i].username %>
+                </td>
+                <td>
+                  <%= user[i].password %>
+                </td>
+                <td>
+                  <a class="btn btn-primary" href="/user/<%= [i]user.id %>/edit">Edit</a>
+                  <button onclick="myFunction(<%= user[i].id %>)" class="btn btn-danger" data-id="<%= [i].id %>">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <% var paginationFor = "user" %>
+          <%- include ../templates/pagination.ejs %>
+
+        </div>
+        <!-- /.box-body -->
+      </div>
+    </section>
+
+  </div>
+  <script type="text/javascript">
+    function myFunction(id) {
+      let idUser = id;
+      swal({
+        title: "Yakin Ingin Menghapus Data ini?",
+        text: "Data yang dihapus, tidak bisa kembali lagi.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            window.location.assign(`/user/delete/${idUser}`);
+          }
+        });
+    };
+  </script>
+  <%- include ../templates/adminlte/footer.ejs %>
