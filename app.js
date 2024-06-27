@@ -6,6 +6,7 @@ const router = require("./routes/index");
 const flash = require("connect-flash");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const login = require("./routes/siswa");
 const siswa = require("./routes/siswa");
 const user = require("./routes/user");
 
@@ -36,9 +37,9 @@ app.use(
 
 // routes
 app.use("/", router);
+app.use("/login", login);
 app.use("/siswa", siswa);
 app.use("/user", user);
 
 const port = process.env.PORT || 3300;
-
 app.listen(port, () => console.log(`Server start on port ${port}`));
